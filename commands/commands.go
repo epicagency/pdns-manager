@@ -7,6 +7,7 @@ var shell *ishell.Shell
 func Init(_shell *ishell.Shell) {
 	shell = _shell
 
+	shell.Register("touch", touch)
 	shell.Register("show", show)
 	shell.Register("list", list)
 	shell.Register("help", help)

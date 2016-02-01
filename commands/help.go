@@ -5,7 +5,7 @@ PowerDNS commands:
 
 - list
 - show [zone-name]
-- touch [zone-name]
+- touch [zone-name] (updates SOA record)
 - create [zone-name]
 - drop [zone-name]
 - add_record [zone-name]
