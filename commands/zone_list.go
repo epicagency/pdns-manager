@@ -6,7 +6,7 @@ import (
 	"github.com/epicagency/pdns-manager/pdns"
 )
 
-func list(args ...string) (string, error) {
+func zone_list(args ...string) (string, error) {
 	zones, errs := pdns.GetZones()
 	if errs != nil {
 		for err := range errs {

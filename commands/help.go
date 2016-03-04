@@ -3,14 +3,14 @@ package commands
 const help_text = `
 PowerDNS commands:
 
-- list
-- show [zone-name]
-- touch [zone-name] (updates SOA record)
-- create [zone-name]
+- zlist
+- zshow [zone-name]
+- ztouch [zone-name] (updates SOA record)
+- zcreate [zone-name]
 - drop [zone-name]
-- add_record [zone-name]
-- update_record [zone-name]
-- delete_record [zone-name]
+- radd [zone-name] {name} {type} {content} {ttl} {priority} {disabled}
+- rdel [zone-name] [index]
+- rupd [zone-name] [index]
 
 `
 

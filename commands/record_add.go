@@ -6,7 +6,7 @@ import (
 	"github.com/epicagency/pdns-manager/pdns"
 )
 
-func add_record(args ...string) (string, error) {
+func record_add(args ...string) (string, error) {
 	shell.ShowPrompt(false)
 	defer shell.ShowPrompt(true)
 

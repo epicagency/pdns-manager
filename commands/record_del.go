@@ -7,7 +7,7 @@ import (
 	"github.com/epicagency/pdns-manager/pdns"
 )
 
-func del_record(args ...string) (string, error) {
+func record_del(args ...string) (string, error) {
 	shell.ShowPrompt(false)
 	defer shell.ShowPrompt(true)
 

@@ -7,7 +7,7 @@ import (
 	"github.com/epicagency/pdns-manager/pdns"
 )
 
-func show(args ...string) (string, error) {
+func zone_show(args ...string) (string, error) {
 
 	const zone_template = `
 {{with .Zone}}{{.Name}}

@@ -8,7 +8,7 @@ import (
 	"github.com/epicagency/pdns-manager/pdns"
 )
 
-func update(args ...string) (string, error) {
+func record_upd(args ...string) (string, error) {
 	shell.ShowPrompt(false)
 	defer shell.ShowPrompt(true)
 

@@ -7,11 +7,11 @@ var shell *ishell.Shell
 func Init(_shell *ishell.Shell) {
 	shell = _shell
 
-	shell.Register("del_record", del_record)
-	shell.Register("add_record", add_record)
-	shell.Register("update", update)
-	shell.Register("touch", touch)
-	shell.Register("show", show)
-	shell.Register("list", list)
+	shell.Register("rdel", record_del)
+	shell.Register("radd", record_add)
+	shell.Register("rupdate", record_upd)
+	shell.Register("ztouch", zone_touch)
+	shell.Register("zshow", zone_show)
+	shell.Register("zlist", zone_list)
 	shell.Register("help", help)
 }

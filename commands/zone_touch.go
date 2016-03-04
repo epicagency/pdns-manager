@@ -8,7 +8,7 @@ import (
 	"github.com/epicagency/pdns-manager/pdns"
 )
 
-func touch(args ...string) (string, error) {
+func zone_touch(args ...string) (string, error) {
 	shell.ShowPrompt(false)
 	defer shell.ShowPrompt(true)
 
