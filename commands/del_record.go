@@ -7,7 +7,7 @@ import (
 	"github.com/epicagency/pdns-manager/pdns"
 )
 
-func update(args ...string) (string, error) {
+func del_record(args ...string) (string, error) {
 	shell.ShowPrompt(false)
 	defer shell.ShowPrompt(true)
 
@@ -43,7 +43,7 @@ func update(args ...string) (string, error) {
 	if len(records) > 1 {
 		errs = zone.UpdateRecords(records)
 	} else {
-		errs = zone.DeleteRecord(records)
+		errs = zone.DeleteRecord(record)
 	}
 	if errs != nil {
 		for err := range errs {

@@ -88,7 +88,34 @@ func (z *Zone) UpdateRecords(rs []*Record) []error {
 		New().
 		Patch(fmt.Sprintf("%s/zones/%s", os.Getenv("API_URL"), z.Name)).
 		Set("X-API-Key", os.Getenv("API_KEY")).
-		SetDebug(true).
+		Send(c).
+		EndBytes()
+
+	if errs != nil {
+		return errs
+	}
+	err := json.Unmarshal(bytes, z)
+	if err != nil {
+		return []error{err}
+	}
+
+	return nil
+}
+
+func (z *Zone) DeleteRecord(r *Record) []error {
+	c := RRsetContainer{
+		RRsets: []*RRset{
+			&RRset{
+				Name: r.Name, Type: r.Type, ChangeType: "DELETE",
+				Records: []*Record{r},
+			},
+		},
+	}
+
+	_, bytes, errs := gorequest.
+		New().
+		Patch(fmt.Sprintf("%s/zones/%s", os.Getenv("API_URL"), z.Name)).
+		Set("X-API-Key", os.Getenv("API_KEY")).
 		Send(c).
 		EndBytes()
 
