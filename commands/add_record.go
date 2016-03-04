@@ -20,46 +20,55 @@ func add_record(args ...string) (string, error) {
 
 	record := new(pdns.Record)
 
-	shell.Print("Name: ")
-	name := shell.ReadLine()
-	if name == "" {
-		return "name can't be empty", nil
-	}
-	record.Name = name
+	if len(args) < 7 {
+		shell.Print("Name: ")
+		name := shell.ReadLine()
+		if name == "" {
+			return "name can't be empty", nil
+		}
+		record.Name = name
 
-	shell.Print("Type: ")
-	typ := shell.ReadLine()
-	if typ == "" {
-		return "type can't be empty", nil
-	}
-	record.Type = typ
+		shell.Print("Type: ")
+		typ := shell.ReadLine()
+		if typ == "" {
+			return "type can't be empty", nil
+		}
+		record.Type = typ
 
-	shell.Print("Content: ")
-	content := shell.ReadLine()
-	if content == "" {
-		return "content can't be empty", nil
-	}
-	record.Content = content
+		shell.Print("Content: ")
+		content := shell.ReadLine()
+		if content == "" {
+			return "content can't be empty", nil
+		}
+		record.Content = content
 
-	shell.Print("TTL [300]: ")
-	ttl := shell.ReadLine()
-	if ttl != "" {
-		record.TTL, _ = strconv.Atoi(ttl)
+		shell.Print("TTL [300]: ")
+		ttl := shell.ReadLine()
+		if ttl != "" {
+			record.TTL, _ = strconv.Atoi(ttl)
+		} else {
+			record.TTL = 300
+		}
+
+		shell.Print("Priority [0]: ")
+		prio := shell.ReadLine()
+		if prio != "" {
+			record.Priority, _ = strconv.Atoi(prio)
+		} else {
+			record.Priority = 0
+		}
+
+		shell.Print("Disabled [false]?: ")
+		dis := shell.ReadLine()
+		record.Disabled = (dis == "y")
 	} else {
-		record.TTL = 300
+		record.Name = args[1]
+		record.Type = args[2]
+		record.Content = args[3]
+		record.TTL, _ = strconv.Atoi(args[4])
+		record.Priority, _ = strconv.Atoi(args[5])
+		record.Disabled = (args[6] == "y")
 	}
-
-	shell.Print("Priority [0]: ")
-	prio := shell.ReadLine()
-	if prio != "" {
-		record.Priority, _ = strconv.Atoi(prio)
-	} else {
-		record.Priority = 0
-	}
-
-	shell.Print("Disabled [false]?: ")
-	dis := shell.ReadLine()
-	record.Disabled = (dis == "y")
 
 	shell.Print("Do you really want to add this record?? [y/n] ")
 	confirm := shell.ReadLine()
