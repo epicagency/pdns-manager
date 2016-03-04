@@ -1,35 +1,25 @@
 package commands
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/epicagency/pdns-manager/pdns"
-	"github.com/parnurzeal/gorequest"
 )
 
 func touch(args ...string) (string, error) {
 	shell.ShowPrompt(false)
 	defer shell.ShowPrompt(true)
 
-	_, bytes, errs := gorequest.
-		New().
-		Get(fmt.Sprintf("http://dns1.epic-sys.io/servers/localhost/zones/%s", args[0])).
-		Set("X-API-Key", "bisque.tutelage.organist.payment").
-		EndBytes()
-
+	zone, errs := pdns.GetZone(args[0])
 	if errs != nil {
 		for err := range errs {
 			shell.Println(err)
 		}
+		return "", nil
 	}
 
-	zone := new(pdns.Zone)
-	err := json.Unmarshal(bytes, zone)
-	if err != nil {
-		return "", err
-	}
 	var soa_record *pdns.Record
 	for _, record := range zone.Records {
 		if record.Type == "SOA" {
@@ -42,9 +32,11 @@ func touch(args ...string) (string, error) {
 		return "", nil
 	}
 	shell.Println(fmt.Sprintf("Current serial: %d", zone.Serial))
+
+	var serial string
 	for {
 		shell.Print("New serial: ")
-		serial := shell.ReadLine()
+		serial = shell.ReadLine()
 		if serial == "" {
 			shell.Println("No serial provided, canceling")
 			return "", nil
@@ -61,7 +53,19 @@ func touch(args ...string) (string, error) {
 				continue
 			}
 		}
-		shell.Println("Updating serial...")
-		return "", nil
+
+		break
 	}
+
+	soa_record.Content = strings.Replace(soa_record.Content, strconv.Itoa(zone.Serial), serial, 1)
+
+	shell.Println(fmt.Sprintf("New SOA: %s", soa_record.Content))
+
+	errs = zone.UpdateRecords([]*pdns.Record{soa_record})
+	if errs != nil {
+		for err := range errs {
+			shell.Println(err)
+		}
+	}
+	return "", nil
 }
