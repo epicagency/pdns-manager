@@ -19,8 +19,11 @@ func record_add(args ...string) (string, error) {
 	}
 
 	record := new(pdns.Record)
+	record.TTL = 300
+	record.Priority = 0
+	record.Disabled = false
 
-	if len(args) < 7 {
+	if len(args) < 4 {
 		shell.Print("Name: ")
 		name := shell.ReadLine()
 		if name == "" {
@@ -46,16 +49,12 @@ func record_add(args ...string) (string, error) {
 		ttl := shell.ReadLine()
 		if ttl != "" {
 			record.TTL, _ = strconv.Atoi(ttl)
-		} else {
-			record.TTL = 300
 		}
 
 		shell.Print("Priority [0]: ")
 		prio := shell.ReadLine()
 		if prio != "" {
 			record.Priority, _ = strconv.Atoi(prio)
-		} else {
-			record.Priority = 0
 		}
 
 		shell.Print("Disabled [false]?: ")
@@ -65,9 +64,15 @@ func record_add(args ...string) (string, error) {
 		record.Name = args[1]
 		record.Type = args[2]
 		record.Content = args[3]
-		record.TTL, _ = strconv.Atoi(args[4])
-		record.Priority, _ = strconv.Atoi(args[5])
-		record.Disabled = (args[6] == "y")
+		if len(args) > 4 {
+			record.TTL, _ = strconv.Atoi(args[4])
+		}
+		if len(args) > 5 {
+			record.Priority, _ = strconv.Atoi(args[5])
+		}
+		if len(args) > 6 {
+			record.Disabled = (args[6] == "y")
+		}
 	}
 
 	shell.Print("Do you really want to add this record?? [y/n] ")
